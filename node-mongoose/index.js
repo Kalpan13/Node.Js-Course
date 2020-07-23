@@ -9,16 +9,30 @@ const connect = mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology
 connect.then((db) => {
     console.log('Connected correctly to Server');
     Dishes.create({
-        name : 'Dish-1',
-        description : 'Desc of Dish-1 using Schema'
+        name : 'Dish-2',
+        description : 'Desc of Dish-2 using Schema'
     })
    .then((dish) => {
         console.log(dish);
-        Dishes.find({}).exec();
+        
+        return Dishes.findByIdAndUpdate( dish._id, {
+            $set : { description : 'Updated Description '}
+        }, {
+            new : true   
+        }).exec();
     })
-    .then((dishes) => {
-        console.log(dishes);
-        return Dishes.deleteMany({});
+    .then((dish) => {
+        console.log(dish)
+        dish.comments.push({
+            rating : 5,
+            comment : 'This is the comment for the dish',
+            author : 'Kalpan Tumdi'
+        });
+        return dish.save();
+    })
+    .then((dish) => {
+        console.log(dish);
+        return Dishes.deleteMany({})
     })
     .then(() => {
         return mongoose.connection.close();

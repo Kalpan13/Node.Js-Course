@@ -1,0 +1,5 @@
+*.pdf
+node_modules/
+confusionserver/node_modules
+node-passport/node_modules
+node-mongoose/node_modules
